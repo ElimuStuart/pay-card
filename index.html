@@ -9,6 +9,7 @@
       body {
         margin: 0;
         padding: 1em;
+        background-color: #fff;
       }
       
       [data-cart-info],
@@ -55,9 +56,100 @@
       ::placeholder {
         color: #fff;
       }
+
+      [data-cart-info] span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      
+      .material-icons {
+        font-size: 150px;
+      }
+      
+      [data-credit-card] {
+        width: 435px;
+        min-height: 240px;
+        border-radius: 10px;
+        background-color: #5d6874;
+      }
+      
+      [data-card-type] {
+        display: block;
+        width: 120px;
+        height: 60px;
+      }
+      
+      [data-cc-digits] {
+        margin-top: 2em;
+      }
+      
+      [data-cc-digits] input {
+        color: #fff;
+        font-size: 2em;
+        line-height: 2em;
+        border: none;
+        background: none;
+        margin-right: 0.5em;
+      }
+      
+      [data-cc-info] {
+        margin-top: 1em;
+      }
+      
+      [data-cc-info] input {
+        color: #fff;
+        font-size: 1.2em;
+        border: none;
+        background: none;
+      }
+      
+      [data-cc-info] input:last-child {
+        padding-right: 10px;
+        float: right;
+      }
+      
+      [data-pay-btn] {
+        position: fixed;
+        width: 90%;
+        border: 1px solid;
+        bottom: 20px;
+      }
     </style>
   </head>
   <body>
+
+    <div data-cart-info>
+      
+      <h1 class="mdc-typography--headline4">
+        <span class="material-icons">shopping_cart</span>
+        <span data-bill></span>
+      </h1>
+      
+    </div>
+    
+    <div data-credit-card class="mdc-card mdc-card--outlined">
+      <!--  -->
+      <div class="mdc-card__primary-action">
+        
+        <img data-card-type src="http://placehold.it/120x60.png?text=Card">
+        <div data-cc-digits>
+          <input type="text" size="4" placeholder="----">
+          <input type="text" size="4" placeholder="----">
+          <input type="text" size="4" placeholder="----">
+          <input type="text" size="4" placeholder="----">
+          
+          
+        </div>
+        <div data-cc-info>
+          <input type="text" size="20" placeholder="Name Surname">
+          <input type="text" size="6" placeholder="MM/YY">
+        </div>
+      </div>
+      
+    </div>
+
+    <button class="mdc-button" data-pay-btn>Pay & Checkout Now</button>
+
     <script>
       const supportedCards = {
         visa, mastercard
