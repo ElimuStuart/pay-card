@@ -56,7 +56,7 @@
       ::placeholder {
         color: #fff;
       }
-
+      
       [data-cart-info] span {
         display: inline-block;
         vertical-align: middle;
@@ -117,7 +117,7 @@
     </style>
   </head>
   <body>
-
+    
     <div data-cart-info>
       
       <h1 class="mdc-typography--headline4">
@@ -128,7 +128,7 @@
     </div>
     
     <div data-credit-card class="mdc-card mdc-card--outlined">
-      <!--  -->
+      
       <div class="mdc-card__primary-action">
         
         <img data-card-type src="http://placehold.it/120x60.png?text=Card">
@@ -144,12 +144,13 @@
           <input type="text" size="20" placeholder="Name Surname">
           <input type="text" size="6" placeholder="MM/YY">
         </div>
+        
       </div>
       
     </div>
-
+    
     <button class="mdc-button" data-pay-btn>Pay & Checkout Now</button>
-
+    
     <script>
       const supportedCards = {
         visa, mastercard
@@ -203,7 +204,66 @@
         }
       ];
       
+      const appState = {};
+      
+      const formatAsMoney = (amount, buyerCountry) => {
+        
+        const checkCountry = countries.filter(index => index.country === buyerCountry);
+        const countryCode = checkCountry[0].code;
+        const countryCurrency = checkCountry[0].currency;
+        const americaCountryCode = countries[0].code;
+        const americaCurrency = countries[0].currency;
+        
+        return checkCountry ?  amount.toLocaleString(countryCode, {style: 'currency', currency: countryCurrency }) : amount.toLocaleString(americaCountryCode, americaCurrency);
+        
+      };
+      
+      const detectCardType = ({target}) => {
+        
+      };
+      
+      const validateCardExpiryDate = ({target}) => {
+        
+      };
+      
+      const validateCardHolderName = ({target}) => {
+        
+      };
+      
+      const uiCanInteract = () => {
+        
+      };
+      
+      const displayCartTotal = ({results}) => {
+        
+        const [data] = results;
+        const { itemsInCart, buyerCountry } = data;
+        
+        appState.items = itemsInCart;
+        appState.country = buyerCountry;
+        
+        appState.bill = itemsInCart.reduce((qty,price) => qty*price, 0);
+        
+        appState.billFormated = formatAsMoney(appState.bill, appState.country);
+        
+        const dataBillSpan = document.querySelector("span[data-bill]");
+        
+        dataBillSpan.textContent = appState.billFormated;
+        
+        uiCanInteract();
+        
+      };
+      
+      const fetchBill = () => {
+        const api = "https://randomapi.com/api/006b08a801d82d0c9824dcfdfdfa3b3c";
+        fetch(api)
+        	.then(response => response.json())
+        	.then(data => displayCartTotal(data))
+        	.catch(error => console.log("Error:", error))
+      }
+      
       const startApp = () => {
+        fetchBill();
       };
 
       startApp();
