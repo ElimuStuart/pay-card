@@ -82,3 +82,52 @@ Set the text content of the data-bill SPAN to the formatted bill set in appState
 Finally, call uiCanInteract to wrap up displayCartTotal
 
 Run the app (click the play button) and see if the correct formatted bill is displayed in the UI. Next, we will allow input and interaction so that users can provide payment information.
+
+#Challenge 3 of 4
+Allow Payment
+Step 1
+Create a flagIfInvalid function just after formatAsMoney function. This function is used to mark an input entry as invalid (strike-though) nor not. It should take a field and isValid parameters. If isValid is true, it should remove the is-invalid class from field, otherwise it should add it to field.
+
+Just after flagIfInvalid function, create a expiryDateFormatIsValid function which takes a target parameter representing the card's expiry date field. It should return true if the field's value complies with the MM/YY format, otherwise it should return false.
+
+With the above utility functions out of the way, go back to the validateCardExpiryDate function. It's de-structured target parameter will be the card's expiry date field. This function should return true if the value provided matches the MM/YY format (hint: delegate to expiryDateFormatIsValid) AND if the date is in the future. In either case, it should use the flagIfInvalid function to mark the field as valid or not. It then has to return true or false depending on if the validation requirements are met or not.
+
+Now to the validateCardHolderName function. It's de-structured target parameter will be the card holder's name. Recall that its placeholder already suggests the required format, which is Name Surname (2 names separated by space). Each name should be at least 3 characters long. It should use the flagIfInvalid function to mark the field as valid or not and then return true or false depending on if the validation requirements are met or not.
+
+Step 2
+The detectCardType function displays a Visa or MasterCard logo depending on the card number entered by the user. For simplicity sake, our Visa card numbers begin with 4 and MasterCard numbers begin with 5. These are the only supported credit cards in the PayCard app
+
+Sample valid card numbers for your tests:
+Visa:
+4556372551434601
+4916337563926287
+4716361721613449
+4539818898404311
+4929416075118388
+
+MasterCard:
+5130752529459529
+5250457226640843
+5330664490375584
+5241343263959571
+5250445524664938
+The detectCardType function has a de-structured target parameter which represents the first (of four) input field containing the first 4 digits of the card. If it detects a Visa card, it should add a is-visa CSS class to the data-credit-card DIV, else it should remove it to add a is-mastercard class instead, and vice versa. This gives the card a somewhat branded feel. To display the right card logo, detectCardType should set the src of the data-card-type IMAGE using the properties in the supportedCards object, which map to image data URLs for each type of card. Finally, detectCardType needs to return the is-visa or is-mastercard string value depending on the type of card detected
+
+Create a validateCardNumber function above the uiCanInteract function.
+
+Step 3
+The uiCanInteract function will wire up event handling for PayCard
+
+In the uiCanInteract function
+
+Set detectCardType as the blur event listener for the first INPUT element in the data-cc-digits DIV.
+
+Set validateCardHolderName as the blur event listener for the first INPUT element (card holder's name) in the data-cc-info DIV.
+
+Set validateCardExpiryDate as the blur event listener for the second INPUT element (card expiry field) in the data-cc-info DIV.
+
+Set validateCardNumber as the click event listener for the data-pay-btn BUTTON
+
+Give focus to the first INPUT element in the data-cc-digits DIV.
+
+Try filling in some details into the credit card UI and see if your validation code for the card holder's name and expiry date are working as stipulated. Does your detectCardType function also correctly set the right background color for the credit card component and display the right logo as well?
