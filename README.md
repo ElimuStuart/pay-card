@@ -131,3 +131,36 @@ Set validateCardNumber as the click event listener for the data-pay-btn BUTTON
 Give focus to the first INPUT element in the data-cc-digits DIV.
 
 Try filling in some details into the credit card UI and see if your validation code for the card holder's name and expiry date are working as stipulated. Does your detectCardType function also correctly set the right background color for the credit card component and display the right logo as well?
+
+## Challenge 4 of 4
+Validate Card Number
+You will be implementing the The Luhn Algorithm to validate credit card numbers (16 digits. See here(https://en.wikipedia.org/wiki/Luhn_algorithm) for more details, but follow the instructions below for simplicity.
+
+Given a series of up to 16 digits, from the right to left, double every other digit starting with the second to last digit:
+
+1714
+=> [1*, 7, 1*, 4]
+=> [2, 7, 2, 4]
+If a resulting doubled number is greater than 9, replace it with either the sum of its own digits, or 9 subtracted from it.
+
+[8, 18*, 1] 
+=> [8, (1+8), 1]
+OR
+=> [8, (18-9), 1]
+Resulting in:
+=> [8, 9, 1]
+Sum all of the final digits:
+
+[8, 9, 1] 
+=> 8+9+1 
+=> 18
+Finally, take that sum and divide it by 10. If there is no remainder, the original credit card number is valid, else it is not valid.
+
+Implementation
+
+Step 1
+Create a validateWithLuhn function above the validateCardNumber function. It should take a digits parameter which will represent the credit card numbers as an array of integers. It should return true or false depending on if the digits are valid or not.
+Step 2
+Implement the validateCardNumber function to validate the card numbers entered by the user. It delegates to the validateWithLuhn function for the actual validation and returns the true or false value it gets from validateWithLuhn. Before returning the outcome of the validation, it should also add or remove the is-invalid class to the data-cc-digits DIV depending on the validity of the card number.
+
+Try filling in some details into the credit card UI then click the Pay & Checkout Now BUTTON to see if entered card numbers are correctly marked as invalid or not.
