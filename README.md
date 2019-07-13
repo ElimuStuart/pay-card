@@ -164,3 +164,4 @@ Step 2
 Implement the validateCardNumber function to validate the card numbers entered by the user. It delegates to the validateWithLuhn function for the actual validation and returns the true or false value it gets from validateWithLuhn. Before returning the outcome of the validation, it should also add or remove the is-invalid class to the data-cc-digits DIV depending on the validity of the card number.
 
 Try filling in some details into the credit card UI then click the Pay & Checkout Now BUTTON to see if entered card numbers are correctly marked as invalid or not.
+

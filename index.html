@@ -153,7 +153,7 @@
     
     <script>
       const supportedCards = {
-        visa, mastercard
+        // visa, mastercard
       };
       
       const countries = [
@@ -223,8 +223,10 @@
       }
       
       const expiryDateFormatIsValid = target => {
-        const regex = /^\D{2}-\{2}$/;
-        return target.value.match(regex);
+        const regex = /[\d]{1,2}\/[\d]{2}/;
+        // console.log(regex.test(target.value));
+        // console.log(target.value.match(regex));
+        return regex.test(target.value);
       }
       
       const detectCardType = ({target}) => {
@@ -241,7 +243,7 @@
           creditCardLogo.src = supportedCards.visa;
           return "is-visa";
         }else {
-          creditCardDiv.classList.add(".is-mastercard");
+          creditCardDiv.classList.add("is-mastercard");
           creditCardLogo.src = supportedCards.mastercard;
           return "is-mastercard";
         }
@@ -251,11 +253,12 @@
       const validateCardExpiryDate = ({target}) => {
         let isCardExpired;
         
-        
+        // console.log(expiryDateFormatIsValid(target))
         if(expiryDateFormatIsValid(target)) {
-          let dateArray = target.split("/");
+          let dateArray = target.value.split("/");
           const [month, year] = dateArray;
           const expiryDate = new Date(year + '-' + month + '-1');
+          console.log(expiryDate);
           if (expiryDate < new Date()) {
             isCardExpired = false;
             flagIfInvalid(target, false);
@@ -287,9 +290,65 @@
         
       };
       
+      const sum = (total, num, i) => {
+
+        return (i % 2 !== 0) ? total + num : total + arr.splice(i, 1, ((num - 9) || num.toString().split('').map(Number).reduce((a,b)=>a+b)));
+
+        // return x + y + z;
+      }
+
+      const numbers = [1, 2, 3];
+
+      const digitsArray = digits => digits.toString().split('').reverse().map(Number);
+
+      const [a, ...arr] = numbers; 
+
+      console.log(digitsArray(4485275742308327));
+
+      console.log(arr.reduce(sum));
+
+      console.log(a);
+      console.log(arr);
+
+      const [, ...arrr] = numbers;
+
+      console.log(arrr);
+      // expected output: 6
+      
+      const validateWithLuhn = digits => {
+
+      	const digitsArray = digits.toString().split('').reverse().map(Number);
+        const lastNo = digitsArray[0];
+        
+        let sum = digitsArray.reduce((total, num, i) => {
+          return i%2 !== 0 ? total + num : digitsArray.splice(i, 1, ((num - 9) || num.toString().split('').map(Number).reduce((a,b) => a + b)));
+        });
+        
+        sum += lastNo;
+        
+        return sum%10 === 0 ? true : false;
+      
+      }
+      
+      
       const validateCardNumber = () => {
         
-        
+        const digitsDiv = document.querySelector('[data-cc-digits]');
+        let cardNos = document.querySelectorAll('[data-cc-digits] > input');
+        let cardNo = "";
+        for (let i = 0; i < cardNos.length; i++) {
+          cardNo += cardNos[i].value;
+        }
+
+        console.log(cardNo);
+        console.log(validateWithLuhn(cardNo));
+        if (validateWithLuhn(cardNo)) {
+          digitsDiv.classList.remove('is-invalid');
+          return true;
+        } else {
+          digitsDiv.classList.add('is-invalid');
+          return false;
+        }
         
       };
       
