@@ -35,11 +35,11 @@
         margin-left: calc(100% - 130px);
       }
 
-      .is-visa {
+      [data-credit-card].is-visa {
         background: linear-gradient(135deg, #622774 0%, #c53364 100%);
       }
 
-      .is-mastercard {
+      [data-credit-card].is-mastercard {
         background: linear-gradient(135deg, #65799b 0%, #5e2563 100%);
       }
 
@@ -218,19 +218,98 @@
         
       };
       
+      const flagIfInvalid = (field, isValid) => {
+        isValid ? field.classList.remove("is-invalid") : field.classList.add("is-invalid");
+      }
+      
+      const expiryDateFormatIsValid = target => {
+        const regex = /^\D{2}-\{2}$/;
+        return target.value.match(regex);
+      }
+      
       const detectCardType = ({target}) => {
+        
+        const creditCardDiv = document.querySelector("[data-credit-card]");
+        const creditCardLogo = document.querySelector("[data-card-type]");
+        
+        const regEx = /^4/;
+        const regEx1 = /^5/;
+        
+       
+        if (regEx.test(target.value)) {
+          creditCardDiv.classList.add("is-visa");
+          creditCardLogo.src = supportedCards.visa;
+          return "is-visa";
+        }else {
+          creditCardDiv.classList.add(".is-mastercard");
+          creditCardLogo.src = supportedCards.mastercard;
+          return "is-mastercard";
+        }
         
       };
       
       const validateCardExpiryDate = ({target}) => {
+        let isCardExpired;
         
+        
+        if(expiryDateFormatIsValid(target)) {
+          let dateArray = target.split("/");
+          const [month, year] = dateArray;
+          const expiryDate = new Date(year + '-' + month + '-1');
+          if (expiryDate < new Date()) {
+            isCardExpired = false;
+            flagIfInvalid(target, false);
+          }else {
+            isCardExpired = true;
+            flagIfInvalid(target, true);
+          }
+        }else {
+          isCardExpired = true;
+          flagIfInvalid(target, true);
+        }
+        
+        return isCardExpired;
       };
       
       const validateCardHolderName = ({target}) => {
+        const regEx = /\w{3,}\s\w{3,}/
+        let isCardHolderNameValid;
+        
+        if (regEx.test(target.value)) {
+          isCardHolderNameValid = true;
+          flagIfInvalid(target, true);
+        }else {
+          isCardHolderNameValid = false;
+          flagIfInvalid(target, false);
+        }
+        
+        return isCardHolderNameValid;
         
       };
       
+      const validateCardNumber = () => {
+        
+        
+        
+      };
+      
+      
+      
       const uiCanInteract = () => {
+        
+        const firstInputDigits = document.querySelector("[data-cc-digits] > input:first-child");
+        const firstInputInfo = document.querySelector("[data-cc-info] > input:first-child");
+        const secondInputInfo = document.querySelector("[data-cc-info] > input:last-child");
+        const payBtn = document.querySelector("[data-pay-btn]");
+        
+        firstInputDigits.addEventListener('blur', detectCardType);
+        firstInputInfo.addEventListener('blur', validateCardHolderName);
+        secondInputInfo.addEventListener('blur', validateCardExpiryDate);
+        payBtn.addEventListener('click', validateCardNumber);
+        
+        firstInputDigits.focus();
+        
+        
         
       };
       
